@@ -98,9 +98,9 @@ public:
     src = PerspectiveTrans(cv_ptr->image);
 
   
-
+    
     //convert to HSV colorspace
-    /*cvtColor(src, src, COLOR_RGB2HSV);
+    cvtColor(src, src, COLOR_RGB2HSV);
     //find green parts of image
     inRange(src, Scalar(38, 160, 60), Scalar(75, 255, 255), src);
   
@@ -121,26 +121,27 @@ public:
     /// Draw contours
     Mat drawing = Mat::zeros( edges.size(), CV_8UC3 );
     for( int i = 0; i< contours.size(); i++ )
-       {
-      if(contourArea(contours[i], false) != 0){
-         //Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
-         //drawContours( drawing, contours, i, color, 2, 8,1, 0, Point() );
-         //circle(src, mc[i],3,Scalar(1,1,1));
+      {
+        //if(contourArea(contours[i], false) != 0){
+           //Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+           //drawContours( drawing, contours, i, color, 2, 8,1, 0, Point() );
+           //circle(src, mc[i],3,Scalar(1,1,1));
 
-         //0.3057 cm/pixel
-         //give dimensions based on robot frame - reference point is in bottom left
-         mc[i].y = src.size().height - mc[i].y;
-         x = mc[i].y * 0.393 + 23;
-         //determine y value considering black corners of transformed image
-         if (mc[i].y < 263)
-           y = (296 - mc[i].x) * 0.393;
-         else
-           y = (296 -(mc[i].x - 115 + mc[i].y*(114/21))) * 0.393;
+           //0.3057 cm/pixel
+           //give dimensions based on robot frame - reference point is in bottom left
+          mc[i].y = src.size().height - mc[i].y;
+          x = (mc[i].y + 37) * 0.3876;
+           //determine y value considering black corners of transformed image
+          if (mc[i].y < 263)
+            y = ((308 - mc[i].x) * 0.3876);
+          else
+            y = ((308 -(mc[i].x - 115 + mc[i].y*(115/217))) * 0.3876);
 
-         //std::cout << "x = " << x << " ; y = " <<  y << std::endl;
-     }
+          if(x < 100 && x > -100.0 && y < 100 && y > -100)
+            ROS_INFO("X = %f; Y = %f", x, y);
+        //}
       }
-    */
+    
 
     // Update GUI Window
     cv::imshow(OPENCV_WINDOW, src);
